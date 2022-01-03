@@ -8,7 +8,6 @@ output "container_name" {
 
 output "container_ip_port" {
 
-  value = [for i in docker_container.nodered_container[*]: join(":",[i.ip_address],i.ports[*]["external"])]
+  value = [for i in docker_container.nodered_container[*]: join(":",[i.ip_address],i.ports[*]["internal"])]
 
 }
-
