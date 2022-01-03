@@ -17,9 +17,15 @@ resource "docker_image" "nodered_image" {
   name = "nodered/node-red:latest"
 }
 
+resource "null_resource" "dockervol" {
+  provisioner "local-exec" {
+    command = "mkdir noderedvol/ || true && sudo chown -R 1000:1000 noderedvol/ && sudo chmod 777 noderedvol/"
+  }
+}
+
 
 resource "random_string" "random" {
-  count = 1
+  count = local.container_count
   length  = 4
   special = false
   upper   = false
@@ -27,12 +33,17 @@ resource "random_string" "random" {
 
 
 resource "docker_container" "nodered_container" {
-  count = 1
+  count = local.container_count
   name  = join("-",["nodered",random_string.random[count.index].result])
   image = docker_image.nodered_image.latest
   ports {
-    internal = "1880"
-    #external = "1880"
+    internal = var.int_port
+    external = var.ext_port[count.index]
+  }
+
+  volumes {
+    container_path = "/data"
+    host_path = "<abspath>/noderedvol"
   }
 }
 
@@ -45,4 +56,3 @@ resource "docker_container" "nodered_container" {
 #   image = docker_image.nodered_image.latest
 
 # }
-
