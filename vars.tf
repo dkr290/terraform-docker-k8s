@@ -26,15 +26,15 @@ variable "ext_port" {
   type = map
   #sensitive = true  
 
-  validation {
-    condition = max(var.ext_port["dev"]...) <= 65535 && min(var.ext_port["dev"]...) >= 1970
-    error_message = "The external port must be in the valid port range 1970 - 65535."
-  }
+  # validation {
+  #   condition = max(var.ext_port["dev"]...) <= 65535 && min(var.ext_port["dev"]...) >= 1970
+  #   error_message = "The external port must be in the valid port range 1970 - 65535."
+  # }
 
-  validation {
-    condition = max(var.ext_port["prod"]...) <= 1970 && min(var.ext_port["prod"]...) >= 1880
-    error_message = "The external port must be in the valid port range 1970 - 1880."
-  }
+  # validation {
+  #   condition = max(var.ext_port["prod"]...) <= 1970 && min(var.ext_port["prod"]...) >= 1880
+  #   error_message = "The external port must be in the valid port range 1970 - 1880."
+  # }
  
  
 
@@ -53,8 +53,4 @@ variable "int_port" {
 }
 
 
-locals {
 
-  container_count = length(lookup(var.ext_port,terraform.workspace))
-
-}
