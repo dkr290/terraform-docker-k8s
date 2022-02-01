@@ -1,6 +1,6 @@
 #Output the IP Address of the Container
 output "container_name" {
-  value       = docker_container.nodered_container[*].name
+  value       = docker_container.nodered_container.name
   description = "The name"
 
 }
